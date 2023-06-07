@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "./index.css";
 
 const pizzaData = [
     {
@@ -49,21 +50,77 @@ const pizzaData = [
 
 function App() {
     return (
-        <div>
-            <h1>Hello React!!</h1>
-            <Pizza />
+        <div className="container">
+            <Header />
+            <Menu />
+            <Footer />
         </div>
     )
 }
 
-function Pizza() {
-    return (
-        <div>
-            <img src="pizzas/funghi.jpg" alt="Pizza Funghi"/>
-            <h2>Pizza Funghi</h2>
-            <p>Tomato, mozarella, mushrooms, and onion</p>
-        </div>
-    );
+function Header() {
+  return (
+    <header className="header">
+      <h1>Fast React Pizza Co.</h1>
+    </header>
+  )
+}
+
+function Menu() {
+  return (
+    <main className="menu">
+      <h2>Cardápio</h2>
+      <Pizza 
+        name="Pizza Funghi"
+        ingredients="Tomato, mozarella, mushrooms, and onion"
+        price={12}
+        photoName="pizzas/funghi.jpg"
+      />
+      <Pizza 
+        name="Pizza Prosciutto"
+        ingredients="Tomato, mozarella, ham, aragula, and burrata cheese"
+        price={18}
+        photoName="pizzas/prosciutto.jpg"
+      />
+    </main>
+  )
+}
+
+function Pizza(props) {
+  return (
+      <div className="pizza">
+          <img src={props.photoName} alt={props.name}/>
+          <div>
+            <h3>{props.name}</h3>
+            <p>{props.ingredients}</p>
+            <span>R${props.price + 2}</span>
+          </div>
+      </div>
+  );
+}
+
+function Footer() {
+
+  let hour = new Date().getHours();
+  const openHour = 12;
+  const closeHour = 22;
+  const isOpen = hour >= openHour && hour <= closeHour;
+  console.log(isOpen);
+
+  /*
+  if(hour >= openHour && hour <= closeHour) {
+    alert('Aberto')
+  }
+  else {
+    alert('Fechado')
+  }
+  */
+
+  return (
+    <footer className="footer">
+      {new Date().toLocaleTimeString()} Rodapé
+    </footer>
+  )
 }
 
 const root = ReactDOM.createRoot(document.querySelector('#root'));

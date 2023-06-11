@@ -67,29 +67,36 @@ function Header() {
 }
 
 function Menu() {
-   const pizzas = pizzaData;
+  const pizzas = pizzaData;
   // const pizzas = [];
+  const numPizzas = pizzas.length;
 
   return (
     <main className="menu">
-      <h2>Cardápio</h2>
+      <h2>Our Menu</h2>
 
-      { pizzas && (
-        <ul className="pizzas">
-          {/*{pizzaData.map((e) => (
-            <Pizza name={e.name}
-              ingredients={e.ingredients}
-              price={e.price}
-              photoName={e.photoName}
-              soldOut={e.soldOut}
-            />
-          ))}*/}
-          
-            {pizzas.map((e) => (
-              <Pizza pizzaObj={e} key={e.name}/>
-            ))}
-        </ul>
-      )}
+      { numPizzas > 0 ?  (
+        <>
+          <p>
+            Authentic Italian cuisine. 6 creative dishes to choose from. All from our stone oven, all organic, all delicious.
+          </p>
+        
+          <ul className="pizzas">
+            {/*{pizzaData.map((e) => (
+              <Pizza name={e.name}
+                ingredients={e.ingredients}
+                price={e.price}
+                photoName={e.photoName}
+                soldOut={e.soldOut}
+              />
+            ))}*/}
+            
+              {pizzas.map((e) => (
+                <Pizza pizzaObj={e} key={e.name}/>
+              ))}
+          </ul>
+        </>
+      ) : "We're still working on our menu. Please come back later:"}
 
       {/*<Pizza 
         name="Pizza Funghi"
@@ -108,13 +115,16 @@ function Menu() {
 }
 
 function Pizza(props) {
+
+  //if (props.pizzaObj.soldOut) return null;
+
   return (
-      <li className="pizza">
+      <li className={`pizza ${props.pizzaObj.soldOut ? 'sold-out' : ''}`}>
           <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name}/>
           <div>
             <h3>{props.pizzaObj.name}</h3>
             <p>{props.pizzaObj.ingredients}</p>
-            <span>R${props.pizzaObj.price}</span>
+            <span>{props.pizzaObj.soldOut ? 'SOLD OUT' : `R$${props.pizzaObj.price}`}</span>
           </div>
       </li>
   );
@@ -139,13 +149,22 @@ function Footer() {
 
   return (
     <footer className="footer">
-      {isOpen && 
-        <div className="order">
-          <p>We're open until {closeHour}:00</p>
-          <button className="btn">Order</button>
-        </div>}         
-      {!isOpen && <p>Closed</p>}
+      {isOpen ? (  
+        <Order closeHours={closeHour}/>
+      ) : (
+        <p>
+          We're happy to welcome you between {openHour}:00 and {closeHour}:00.
+        </p>)}         
     </footer>
+  )
+}
+
+function Order({closeHours}) {
+  return (
+    <div className="order">
+      <p>We're open until {closeHours}:00</p>
+      <button className="btn">Order</button>
+    </div>
   )
 }
 
